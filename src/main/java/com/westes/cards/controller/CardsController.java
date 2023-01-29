@@ -1,6 +1,8 @@
 package com.westes.cards.controller;
 
+import com.westes.cards.config.CardsServiceConfig;
 import com.westes.cards.model.Card;
+import com.westes.cards.model.Properties;
 import com.westes.cards.repository.CardRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,16 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CardsController {
 
+  private final CardsServiceConfig cardsConfig;
   private final CardRepository cardRepository;
 
   @GetMapping("/cards/{customerId}")
   public List<Card> getCardDetails(@PathVariable int customerId) {
-    List<Card> cards = cardRepository.findCardsByCustomerId(customerId);
-    if (cards != null) {
-      return cards;
-    } else {
-      return null;
-    }
+    return cardRepository.findCardsByCustomerId(customerId);
+  }
 
+  @GetMapping("/cards/properties")
+  public Properties getPropertyDetails() {
+    return new Properties(cardsConfig.getMsg(),
+        cardsConfig.getBuildVersion(),
+        cardsConfig.getMailDetails(), cardsConfig.getActiveBranches());
   }
 }
