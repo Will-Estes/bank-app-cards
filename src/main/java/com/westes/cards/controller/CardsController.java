@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,7 +19,8 @@ public class CardsController {
   private final CardRepository cardRepository;
 
   @GetMapping("/cards/{customerId}")
-  public List<Card> getCardDetails(@PathVariable int customerId) {
+  public List<Card> getCardDetails(@RequestHeader("westes-correlation-id") String correlationId,
+      @PathVariable int customerId) {
     return cardRepository.findCardsByCustomerId(customerId);
   }
 
